@@ -15,7 +15,7 @@
 			margin-top: 8px;
 			line-height: 1.2em;
 			font-family: "宋体","华文彩云",serif;
-			font-size: 17px;
+			font-size: 1px;
 		}
 		h1#title {
 			color: #d1a36f;
@@ -97,10 +97,13 @@
 			font-weight: bold;
 			font-family: "华文彩云",serif;
 		}
-		#begin {
+		#begin,#again {
 			margin-left: 20px;
 			padding: 3px;
 			background-color: #fee1c0;
+		}
+		#again {
+			margin-top: 8px;
 		}
 	</style>
 </head>
@@ -126,7 +129,10 @@
 			<button type="button" id="begin" onclick="computer_show()">
 				开始游戏
 			</button>
-			<div id="para">每一局结束请<br>点击“开始游<br>戏”重新开始</div>
+			<br>
+			<button type="button" id="again" onclick="computer_show()">
+				再来一局
+			</button>
 		</div>
 		<!-- 游戏显示区域 -->
 		<div class="main">
