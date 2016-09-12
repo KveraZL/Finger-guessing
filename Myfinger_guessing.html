@@ -1,0 +1,253 @@
+<html>
+<head>
+	<title>Kvera's finger_guessing</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<meta type="keyword" content="石头剪刀布小游戏">
+	<style type="text/css">
+		.wrapper {
+			width: 750px;
+			height: 500px;
+			margin: 10px auto;
+			background: url(images/15.png) no-repeat left center;
+			position: relative;
+		}
+		#para {
+			margin-top: 8px;
+			line-height: 1.2em;
+			font-family: "宋体","华文彩云",serif;
+			font-size: 17px;
+		}
+		h1#title {
+			color: #d1a36f;
+			font-size: 45px;
+			font-weight: bold;
+			font-family: "幼圆","华文彩云",serif;
+			text-shadow:2px 2px #ccc;
+			margin-left: 240px; 
+			padding-top: 30px;
+		}
+		div.scores {
+			position: absolute;
+			left: 40px;
+			top:130px;
+		} 
+		#result {
+			color: #817567;
+			border: 2px solid #d1a36f;
+			margin-bottom: 10px;
+			width: 110px;
+			height: 150px;
+			padding: 0px 5px;
+			text-align: right;
+		}
+		#word {
+			color: #817567;
+		}
+		.main {
+			position: absolute;
+			top: 110px;
+			left: 165px;
+			width: 400px;
+			margin: 10px auto;
+			
+		}
+		.font {
+			font-family: "黑体",serif;
+			color: #e2b481;
+			font-weight: bold;
+			font-size: 30px;
+		}
+		.select {
+			position: absolute;
+			top: 220px;
+			left: 158px;
+			width: 420px;
+			margin: 0px auto;
+			margin-top: 70px;
+			padding: 10px 10px 10px 45px;
+			background: #fff;
+			border: 2px solid #d1a36f;
+		}
+		img {
+			width: 100px;
+			height: 100px;
+			margin-right: 35px;
+		}
+		#show {
+			text-align: center;
+			margin-left: 35px;
+		}
+		#show img {
+			width: 100px;
+			margin: 0px auto;
+		}
+		.select img {
+			opacity: 0.4;
+		}
+		#sign {
+			margin: 0 60px;
+			font-size: 50px;
+		}
+		#result span {
+			font-weight: bold;	
+		}
+		#result_word {
+			color:#f78608;
+			font-size:25px;
+			font-weight: bold;
+			font-family: "华文彩云",serif;
+		}
+		#begin {
+			margin-left: 20px;
+			padding: 3px;
+			background-color: #fee1c0;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrapper">
+		<h1 id="title">剪刀 石头 布</h1>
+		<!-- 左边计分栏 -->
+		<div class="scores">
+			<table id="result">
+				<tr>
+					<td class="para">赢的次数：<span id="win">0</span></td>
+				</tr>
+				<tr>
+					<td class="para">输的次数：<span id="lose">0</span></td>
+				</tr>
+				<tr>
+					<td class="para">平局次数：<span id="draw">0</span></td>
+				</tr>
+				<tr>
+					<td class="para">总局数：<span id="total">0</span></td>
+				</tr>
+			</table>
+			<button type="button" id="begin" onclick="computer_show()">
+				开始游戏
+			</button>
+			<div id="para">每一局结束请<br>点击“开始游<br>戏”重新开始</div>
+		</div>
+		<!-- 游戏显示区域 -->
+		<div class="main">
+			<table id="show">
+				<tr>
+					<td class="font">玩家</td>
+					<td><div id="result_word"></div></td>
+					<td class="font">电脑</td>
+				</tr>
+				<tr>
+					<td><img id="player_img" src="images/bu.gif"></td>
+					<td><p id="sign" class="font">VS</p></td>
+					<td><img src="images/shitou.gif"></td>
+				</tr>
+			</table>
+		</div>
+		<!-- 选择出拳区域 -->
+		<div class="select">
+			<div id="word">请出拳：</div>
+			<table>
+				<tr>
+					<td>
+						<img id="jiandao" src="images/jiandao.gif" onmouseover="mouseover_img(this)" 
+						onmouseout="mouseout_img(this)" onclick="choose_img(this)">
+					</td>
+					<td>
+						<img id="shitou" src="images/shitou.gif" onmouseover="mouseover_img(this)" 
+						onmouseout="mouseout_img(this)" onclick="choose_img(this)">
+					</td>
+					<td>
+						<img id="bu" src="images/bu.gif" onmouseover="mouseover_img(this)" 
+						onmouseout="mouseout_img(this)" onclick="choose_img(this)">
+					</td>
+				</tr>
+			</table>
+		</div>					
+	</div>
+	<!-- JS代码 -->
+	<script type="text/javascript">
+		var w = 0; //计数赢的次数
+		var l = 0; //计数输的次数
+		var d = 0; //计数平局次数
+		var t = 0; //计数总次数
+		var i = 0;
+		var x = document.getElementsByTagName('img')[1];
+		var result_word = document.getElementById('result_word');
+
+		function mouseover_img(obj){
+			obj.style.opacity = '1.0';
+			obj.style.cursor = 'pointer';
+		}
+		function mouseout_img(obj){
+			obj.style.opacity = '0.4';
+		}
+		//电脑图片动态显示
+		function computer(){
+			i++;
+			var j = i%3;
+			switch(j)
+			{
+				case 0:
+				x.src = 'images/jiandao.gif';break;
+				case 1:
+				x.src = 'images/shitou.gif';break;
+				case 2:
+				x.src = 'images/bu.gif';break;
+			}
+			clear = setTimeout(computer,100);
+		}
+		function computer_show(){
+			computer();
+			result_word.innerHTML='';
+		}
+		//停止图片动态显示
+		function stop_computerImg(){
+			clearTimeout(clear);
+		}
+		//选择出拳，并判断输赢
+		function choose_img(obj){
+			stop_computerImg();
+			var z = i%3;
+			console.log(z);
+			var playerImg = document.getElementsByTagName('img')[0];
+			var total = document.getElementById('total');
+			var win = document.getElementById('win');
+			var lose = document.getElementById('lose');
+			var draw = document.getElementById('draw');
+			if( obj.id == "shitou")
+			{
+				playerImg.src = 'images/shitou.gif';
+				switch(z)
+				{
+					case 0:win.innerHTML=++w;result_word.innerHTML='你赢了！';break;
+					case 1:draw.innerHTML=++d;result_word.innerHTML='平局！';break;
+					case 2:lose.innerHTML=++l;result_word.innerHTML='你输了!';break;
+				}
+				total.innerHTML=++t;
+			}
+			else if( obj.id == 'jiandao')
+			{
+				playerImg.src = 'images/jiandao.gif';
+				switch(z)
+				{
+					case 0:draw.innerHTML=++d;result_word.innerHTML='平局！';break;
+					case 1:lose.innerHTML=++l;result_word.innerHTML='你输了！';break;
+					case 2:win.innerHTML=++w;result_word.innerHTML='你赢了！';break;
+				}
+				total.innerHTML=++t;
+			}
+			else if( obj.id == 'bu')
+			{
+				playerImg.src = 'images/bu.gif';
+				switch(z)
+				{
+					case 0:lose.innerHTML=++l;result_word.innerHTML='你输了！';break;
+					case 1:win.innerHTML=++w;result_word.innerHTML='你赢了！';break;
+					case 2:draw.innerHTML=++d;result_word.innerHTML='平局！';break;
+				}
+				total.innerHTML=++t;
+			}
+		}
+	</script>
+</body>
+</html>
